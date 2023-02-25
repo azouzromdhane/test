@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Capteur d'humidité de sol</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+</head>
+<body>
+
+<div id="chart-container"></div>
+
+<script>
+// Configuration du graphique Highcharts
+Highcharts.chart('chart-container', {
+  chart: {
+    type: 'spline',
+    animation: Highcharts.svg,
+    marginRight: 10,
+    events: {
+      load: function() {
+        // Définition de la fonction pour la mise à jour des données toutes les 5 secondes
+        var series = this.series[0];
+        setInterval(function() {
+          var x = (new Date()).getTime();
+          var y = Math.random() * 100;
+          series.addPoint([x, y], true, true);
+        }, 5000);
+      }
+    }
+  },
+  title: {
+    text: 'Capteur d\'humidité de sol'
+  },
+  xAxis: {
+    type: 'datetime',
+    tickPixelInterval: 150
+  },
+  yAxis: {
+    title: {
+      text: 'Niveau d\'humidité'
+    },
+    plotLines: [{
+      value: 0,
+      width: 1,
+      color: '#808080'
+    }]
+  },
+  tooltip: {
+    formatter: function() {
+      return '<b>' + this.series.name + '</b><br/>' +
+        Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+        Highcharts.numberFormat(this.y, 2);
+    }
+  },
+  legend: {
+    enabled: false
+  },
+  exporting: {
+    enabled: false
+  },
+  series: [{
+    name: 'Humidité du sol',
+    data: (function() {
+      // Génération de données aléatoires pour tester le graphique
+      var data = [];
+      var time = (new Date()).getTime();
+      var i;
+      for (i = -19; i <= 0; i++) {
+        data.push({
+          x: time + i * 1000,
+          y: Math.random() * 100
+        });
+      }
+      return data;
+    })()
+  }]
+});
+</script>
+
+</body>
+</html>
